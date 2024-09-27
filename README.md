@@ -91,16 +91,23 @@ Antes de começar, certifique-se de ter instalado em sua máquina:
    cd Smart-Window-System/server
    ```
 
-3. **Instale as dependências**
+2. **Instale as dependências**
 
    Instale as dependências necessárias:
 
    ```bash
    npm install express cors body-parser
-   npm install typescript ts-node @types/node @types/express @types/cors @types/body-parser --save-dev
    ```
 
-3. **Iniciar o backend**
+3. **Instale as definições de tipos**
+
+   Para que o TypeScript funcione corretamente com os pacotes instalados, instale as definições de tipos correspondentes:
+
+   ```bash
+   npm install --save-dev typescript ts-node @types/node @types/express @types/cors @types/body-parser
+   ```
+
+4. **Iniciar o backend**
 
    No terminal, dentro da pasta `backend`, execute:
 
@@ -204,5 +211,3 @@ sistema-hibrido-janela-inteligente/
 [![Pedro Melo](https://github.com/PedroHenriqueMM.png?size=50)](https://github.com/PedroHenriqueMM)
 
 • [**Alexsandro Pasinato**](https://github.com/Alekk123) • [**Gustavo Ferreira**](https://github.com/GustavoMCF) • [**Pedro Melo**](https://github.com/PedroHenriqueMM)
-
----
