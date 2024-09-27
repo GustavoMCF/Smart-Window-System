@@ -4,6 +4,7 @@ import StatusDisplay from './components/StatusDisplay';
 import Controls from './components/Controls';
 import Notifications from './components/Notifications';
 import api from './services/api';
+import './styles.css';
 
 const App: React.FC = () => {
   const [modoAutomatico, setModoAutomatico] = useState<boolean>(true);
