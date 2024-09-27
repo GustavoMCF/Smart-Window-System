@@ -4,7 +4,7 @@ const router = Router();
 
 let modoAutomatico = true;
 let estado = 'Fechado';
-let eventoAtual = '';
+let eventos: string[] = []; // Array para armazenar eventos simulados
 
 router.get('/toggleModo', (req, res) => {
   modoAutomatico = !modoAutomatico;
@@ -19,8 +19,11 @@ router.get('/estado', (req, res) => {
   res.send(`estado=${estado}`);
 });
 
-router.get('/evento', (req, res) => {
-  res.send(`evento=${eventoAtual}`);
+// Endpoint para retornar eventos
+router.get('/eventos', (req, res) => {
+  res.json({
+    eventos: eventos, // Retorna o array de eventos
+  });
 });
 
 router.get('/abrir', (req, res) => {
@@ -39,17 +42,16 @@ router.get('/fechar', (req, res) => {
   res.send('success=1');
 });
 
+// Função para adicionar eventos simulados e remover após um tempo
 export function tratarEvento(evento: string) {
-  eventoAtual = evento;
-  if (modoAutomatico) {
-    if (estado !== 'Fechado' && estado !== 'Fechando') {
-      estado = 'Fechando';
-      setTimeout(() => {
-        estado = 'Fechado';
-        eventoAtual = '';
-      }, 3000);
-    }
-  }
+  eventos.push(evento); // Adiciona o evento ao array
+  console.log(`Evento adicionado: ${evento}`); // Log para depuração
+
+  // Remover o evento automaticamente após 5 segundos
+  setTimeout(() => {
+    eventos = eventos.filter(e => e !== evento); // Remove o evento do array
+    console.log(`Evento removido: ${evento}`); // Log para depuração
+  }, 5000);
 }
 
 export default router;

@@ -1,8 +1,8 @@
 /* Estilo global para o tema escuro */
 body {
-  background-color: #1e1e1e; /* Fundo escuro */
-  color: #f1f1f1;            /* Texto claro */
-  font-family: 'Roboto', sans-serif; /* Fonte moderna */
+  background-color: #1e1e1e;
+  color: #f1f1f1;
+  font-family: 'Roboto', sans-serif;
   margin: 0;
   padding: 0;
   display: flex;
@@ -11,15 +11,66 @@ body {
   height: 100vh;
 }
 
-/* Centralizar o conteúdo */
 .App {
   text-align: center;
   padding: 20px;
-  background-color: #2c2c2c; /* Fundo um pouco mais claro para destacar */
+  background-color: #2c2c2c;
   border-radius: 12px;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5); /* Sombra suave */
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
   max-width: 400px;
   width: 100%;
+}
+
+/* Notificações */
+.notifications {
+  margin-top: 20px;
+  padding: 20px;
+  border-radius: 10px;
+  background-color: #333; /* Fundo para o espaço fixo */
+  min-height: 60px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  transition: all 0.3s ease;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Estilo para notificações de eventos de chuva */
+.notification.rain {
+  background-color: #3498db; /* Azul para chuva */
+  padding: 10px 20px;
+  margin: 10px 0;
+  border-radius: 8px;
+  color: white;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+/* Estilo para notificações de eventos de baixa luminosidade */
+.notification.light {
+  background-color: #f39c12; /* Laranja para baixa luminosidade */
+  padding: 10px 20px;
+  margin: 10px 0;
+  border-radius: 8px;
+  color: white;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.no-notification {
+  color: #888;
+  font-style: italic;
+}
+
+/* Animação para quando notificações aparecem */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* Estilo para o cabeçalho */

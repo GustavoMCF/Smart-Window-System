@@ -1,30 +1,43 @@
-import React from 'react';
-import api from '../services/api';
+import React, { useEffect } from 'react';
 
 interface NotificationsProps {
-  evento: string;
-  modoAutomatico: boolean;
+  eventos: string[];
+  removerEvento: (evento: string) => void;
 }
 
-const Notifications: React.FC<NotificationsProps> = ({ evento, modoAutomatico }) => {
-  const handleAprovar = async () => {
-    try {
-      await api.get('/fechar');
-    } catch (error) {
-      console.error('Erro ao aprovar:', error);
+const Notifications: React.FC<NotificationsProps> = ({ eventos, removerEvento }) => {
+  // Função para aplicar o estilo correto com base no tipo de evento
+  const getColorClass = (evento: string) => {
+    if (evento.toLowerCase().includes('chuva')) {  // Mudamos para verificar "chuva"
+      return 'notification rain';
+    } else if (evento.toLowerCase().includes('luminosidade')) {
+      return 'notification light';
     }
+    return 'notification'; // Classe padrão
   };
 
-  if (modoAutomatico || !evento) {
-    return null;
-  }
+  // Remover eventos automaticamente após 10 segundos
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      eventos.forEach(evento => removerEvento(evento));
+    }, 10000);
+
+    return () => clearTimeout(timer);
+  }, [eventos, removerEvento]);
 
   return (
     <div className="notifications">
-      <div className="notification">
-        <p>{evento}</p>
-        <button onClick={handleAprovar}>Aprovar</button>
-      </div>
+      {eventos.length > 0 ? (
+        eventos.map((evento, index) => (
+          <div className={getColorClass(evento)} key={index}>
+            <p>{evento}</p>
+          </div>
+        ))
+      ) : (
+        <div className="no-notification">
+          <p>Sem eventos no momento</p>
+        </div>
+      )}
     </div>
   );
 };
