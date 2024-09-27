@@ -1,7 +1,8 @@
+import React from 'react';
 import api from '../services/api';
 
 interface ControlsProps {
-  modoAutomatico: boolean;
+  modoAutomatico: boolean; // Recebendo o estado do modo
 }
 
 const Controls: React.FC<ControlsProps> = ({ modoAutomatico }) => {
