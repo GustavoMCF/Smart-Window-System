@@ -4,24 +4,24 @@ import StatusDisplay from './components/StatusDisplay';
 import Controls from './components/Controls';
 import Notifications from './components/Notifications';
 import api from './services/api';
+import './styles.css'; // Importa o arquivo de estilos
 
 const App: React.FC = () => {
-  const [modoAutomatico, setModoAutomatico] = useState<boolean>(true);
-  const [evento, setEvento] = useState<string>('');
+  const [modoAutomatico, setModoAutomatico] = useState<boolean>(true); // Controla o modo manual/automático
+  const [evento, setEvento] = useState<string>(''); // Controla os eventos recebidos
 
+  // useEffect para buscar o modo automático e eventos periodicamente
   useEffect(() => {
-    // Função para buscar o estado do modo automático
     const fetchModo = async () => {
       try {
         const response = await api.get('/modo');
         const modoAtivo = response.data.includes('automatico=1');
-        setModoAutomatico(modoAtivo);  // Atualizando o estado de 'modoAutomatico'
+        setModoAutomatico(modoAtivo); // Atualiza o estado do modo automático
       } catch (error) {
         console.error('Erro ao obter o modo:', error);
       }
     };
 
-    // Função para buscar eventos
     const fetchEvento = async () => {
       try {
         const response = await api.get('/evento');
@@ -37,22 +37,20 @@ const App: React.FC = () => {
       }
     };
 
-    // Atualizar modo automático a cada 2 segundos
     const modoInterval = setInterval(() => {
       fetchModo();
       fetchEvento();
-    }, 2000);
+    }, 2000); // Atualiza a cada 2 segundos
 
-    // Limpar o intervalo ao desmontar o componente
-    return () => clearInterval(modoInterval);
-  }, []);  // O array vazio faz com que esse efeito seja executado apenas uma vez na montagem
+    return () => clearInterval(modoInterval); // Limpa o intervalo quando o componente é desmontado
+  }, []);
 
   return (
     <div className="App">
-      <Header />
-      <StatusDisplay />
-      <Controls modoAutomatico={modoAutomatico} /> {/* Passando modoAutomatico */}
-      <Notifications evento={evento} modoAutomatico={modoAutomatico} />
+      <Header /> {/* Componente do cabeçalho */}
+      <StatusDisplay /> {/* Exibe o status da janela */}
+      <Controls modoAutomatico={modoAutomatico} /> {/* Controles de abrir/fechar */}
+      <Notifications evento={evento} modoAutomatico={modoAutomatico} /> {/* Notificações de eventos */}
     </div>
   );
 };

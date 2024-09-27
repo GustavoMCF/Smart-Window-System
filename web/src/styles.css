@@ -1,50 +1,99 @@
+/* Estilo global para o tema escuro */
 body {
-    font-family: Arial, sans-serif;
-    text-align: center;
-    margin: 20px;
-  }
-  
-  .modoButton {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    padding: 10px 20px;
-  }
-  
-  .header h1 {
-    margin-top: 60px;
-    font-size: 24px;
-  }
-  
-  .status-display p {
-    font-size: 18px;
-    margin: 10px 0;
-  }
-  
-  .controls button {
-    padding: 15px 30px;
-    font-size: 18px;
-    margin: 10px;
-  }
-  
-  .controls button:disabled {
-    background-color: #ccc;
-    cursor: not-allowed;
-  }
-  
-  .notifications {
-    margin-top: 20px;
-  }
-  
-  .notification {
-    background-color: #f9f9f9;
-    border: 1px solid #ccc;
-    padding: 15px;
-    margin-bottom: 10px;
-    text-align: center;
-  }
-  
-  .notification button {
-    margin-left: 10px;
-  }
-  
+  background-color: #1e1e1e; /* Fundo escuro */
+  color: #f1f1f1;            /* Texto claro */
+  font-family: 'Roboto', sans-serif; /* Fonte moderna */
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+/* Centralizar o conteúdo */
+.App {
+  text-align: center;
+  padding: 20px;
+  background-color: #2c2c2c; /* Fundo um pouco mais claro para destacar */
+  border-radius: 12px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5); /* Sombra suave */
+  max-width: 400px;
+  width: 100%;
+}
+
+/* Estilo para o cabeçalho */
+.header {
+  margin-bottom: 20px;
+}
+
+.header h1 {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+/* Estilização dos botões */
+button {
+  background-color: #4CAF50; /* Cor verde */
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 10px 5px;
+  border-radius: 30px; /* Borda arredondada */
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Sombra para profundidade */
+}
+
+/* Botões com hover */
+button:hover {
+  background-color: #45a049; /* Alterar a cor no hover */
+  transform: scale(1.05); /* Animação suave ao passar o mouse */
+}
+
+/* Botão desativado */
+button:disabled {
+  background-color: #555; /* Cor para botão desativado */
+  cursor: not-allowed; /* Cursor de não permitido */
+  opacity: 0.6;
+}
+
+/* Estilo para a exibição de status */
+.status-display {
+  margin: 20px 0;
+  font-size: 18px;
+  background-color: #333; /* Fundo do status */
+  padding: 10px;
+  border-radius: 8px;
+  color: #f1f1f1; /* Texto claro */
+}
+
+/* Notificações */
+.notifications {
+  margin-top: 20px;
+}
+
+.notification {
+  background-color: #444; /* Cor de fundo para notificação */
+  border: 1px solid #666; /* Borda leve */
+  padding: 15px;
+  margin-bottom: 10px;
+  border-radius: 10px;
+  color: #fff;
+}
+
+.notification button {
+  background-color: #ff9800; /* Botão de ação na notificação */
+  padding: 10px 20px;
+  font-size: 14px;
+  border-radius: 20px;
+  margin-top: 10px;
+}
+
+.notification button:hover {
+  background-color: #ffb74d; /* Cor de hover */
+}
