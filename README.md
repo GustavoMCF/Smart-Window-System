@@ -184,7 +184,7 @@ Quando o Arduino Uno estiver disponível, você poderá implementar o backend no
 ## Estrutura do Projeto
 
 ```
-sistema-hibrido-janela-inteligente/
+Smart-Window-System/
 ├── frontend/                 # Frontend desenvolvido em React
 │   ├── node_modules/
 │   ├── public/
@@ -198,7 +198,7 @@ sistema-hibrido-janela-inteligente/
 │   ├── tsconfig.json
 │   └── ...
 └── arduino/                  # Código para o Arduino Uno
-    ├── sistema_hibrido_janela.ino
+    ├── Smart-Window-System.ino
     └── ...
 ```
 
