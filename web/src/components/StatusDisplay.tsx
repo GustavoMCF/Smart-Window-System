@@ -4,22 +4,23 @@ import api from '../services/api';
 const StatusDisplay: React.FC = () => {
   const [estado, setEstado] = useState<string>('Fechado'); // Estado inicial da janela
 
+  const fetchEstado = async () => {
+    try {
+      const response = await api.get('/estado'); // Certifique-se de que a rota é correta
+      setEstado(response.data.split('=')[1]);
+    } catch (error) {
+      console.error('Erro ao obter o estado:', error);
+    }
+  };
+
   useEffect(() => {
-    const fetchEstado = async () => {
-      try {
-        const response = await api.get('/estado');
-        const valorEstado = response.data.split('=')[1];
-        setEstado(valorEstado); // Atualizando o estado da janela
-      } catch (error) {
-        console.error('Erro ao obter o estado:', error);
-      }
-    };
+    const interval = setInterval(() => {
+      fetchEstado();
+    }, 3000);
 
-    // Atualiza o estado da janela a cada 3 segundos
-    const estadoInterval = setInterval(fetchEstado, 3000);
+    fetchEstado(); // Busca inicial
 
-    // Limpa o intervalo quando o componente é desmontado
-    return () => clearInterval(estadoInterval);
+    return () => clearInterval(interval);
   }, []);
 
   return (

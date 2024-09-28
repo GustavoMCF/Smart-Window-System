@@ -1,15 +1,23 @@
-import { tratarEvento } from './routes';
+import { tratarEvento } from './routes'; // Importando corretamente a função tratarEvento
 
-// Função para iniciar a simulação de eventos
+let modoAutomaticoEventos = true; // Define o modo automático para eventos
+
+// Função para iniciar a simulação de eventos de forma automática
 export function iniciarSimulacao() {
   setInterval(() => {
-    const chance = Math.random();
-
-    // Simulação de eventos aleatórios
-    if (chance < 0.5) {  
-      tratarEvento('Chuva detectada pelo sensor de umidade.'); // Mudando para "chuva"
-    } else if (chance >= 0.5 && chance < 0.8) {
-      tratarEvento('Baixa luminosidade detectada pelo sensor de luz.');
+    if (modoAutomaticoEventos) {
+      const chance = Math.random();
+      if (chance < 0.5) {
+        tratarEvento('Chuva detectada pelo sensor de umidade.');
+      } else if (chance >= 0.5 && chance < 0.8) {
+        tratarEvento('Baixa luminosidade detectada pelo sensor de luz.');
+      }
     }
-  }, 3000); // Intervalo de 3 segundos entre cada verificação
+  }, 5000); // Intervalo de 5 segundos
+}
+
+// Função para alternar o modo de eventos (manual/automático)
+export function atualizarModoEventos(modo: boolean) {
+  modoAutomaticoEventos = modo;
+  console.log(`Modo de eventos atualizado para ${modo ? 'automático' : 'manual'}`);
 }
