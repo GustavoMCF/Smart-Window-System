@@ -1,12 +1,30 @@
 import { Router } from 'express';
 import { iniciarSimulacao, atualizarModoEventos } from './simulacao';
+import { cachearResultado } from './cache';  // Middleware de cache
 
 const router = Router();
 
 let modoAutomatico = true;
-let modoAutomaticoEventos = true;
 let estadoJanela = 'Fechado';
 let eventos: string[] = [];
+
+// Função para tratar eventos
+export function tratarEvento(evento: string) {
+  eventos.push(evento);
+  console.log(`Evento adicionado: ${evento}`);
+
+  if (evento.includes('Chuva')) {
+    estadoJanela = 'Fechando';
+  } else if (evento.includes('Luz')) {
+    estadoJanela = 'Abrindo';
+  }
+
+  // Remover o evento automaticamente após 10 segundos
+  setTimeout(() => {
+    eventos = eventos.filter(e => e !== evento);
+    console.log(`Evento removido: ${evento}`);
+  }, 10000);
+}
 
 // Rota para alternar o modo de controle da janela (manual/automático)
 router.get('/toggleModo', (req, res) => {
@@ -40,8 +58,8 @@ router.get('/fechar', (req, res) => {
   }
 });
 
-// Rota para obter o estado da janela
-router.get('/estado', (req, res) => {
+// Rota para obter o estado da janela com cache
+router.get('/estado', cachearResultado(3000), (req, res) => {
   res.send(`estado=${estadoJanela}`);
 });
 
@@ -71,27 +89,5 @@ router.post('/dispararEvento', (req, res) => {
 router.get('/eventos', (req, res) => {
   res.json({ eventos });
 });
-
-// Função para tratar eventos simulados
-export function tratarEvento(evento: string) {
-  eventos.push(evento);
-  console.log(`Evento adicionado: ${evento}`);
-
-  if (evento.includes('Chuva')) {
-    estadoJanela = 'Fechando';
-  } else if (evento.includes('Luz')) {
-    estadoJanela = 'Abrindo';
-  }
-
-  // Remover o evento automaticamente após 10 segundos
-  setTimeout(() => {
-    eventos = eventos.filter(e => e !== evento);
-    estadoJanela = 'Fechado';
-    console.log(`Evento removido: ${evento}`);
-  }, 10000);
-}
-
-// Inicia a simulação de eventos
-iniciarSimulacao();
 
 export default router;

@@ -1,6 +1,6 @@
 import { tratarEvento } from './routes'; // Importando corretamente a função tratarEvento
 
-let modoAutomaticoEventos = true; // Define o modo automático para eventos
+let modoAutomaticoEventos = true;
 
 // Função para iniciar a simulação de eventos de forma automática
 export function iniciarSimulacao() {

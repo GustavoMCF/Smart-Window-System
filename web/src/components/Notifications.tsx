@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 
 interface NotificationsProps {
   eventos: string[];
@@ -6,15 +6,15 @@ interface NotificationsProps {
 }
 
 const Notifications: React.FC<NotificationsProps> = ({ eventos, removerEvento }) => {
-  // Função para aplicar o estilo correto com base no tipo de evento
-  const getColorClass = (evento: string) => {
-    if (evento.toLowerCase().includes('chuva')) {  // Mudamos para verificar "chuva"
+  // Memoize a função que retorna a classe CSS com base no tipo de evento
+  const getColorClass = useMemo(() => (evento: string) => {
+    if (evento.toLowerCase().includes('chuva')) {
       return 'notification rain';
     } else if (evento.toLowerCase().includes('luminosidade')) {
       return 'notification light';
     }
-    return 'notification'; // Classe padrão
-  };
+    return 'notification';
+  }, []);
 
   // Remover eventos automaticamente após 10 segundos
   useEffect(() => {
