@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import api from '../services/api';
+import { debounce } from 'lodash';
 
 const EventControl: React.FC = () => {
   const [modoAutomatico, setModoAutomatico] = useState<boolean>(true);
@@ -17,6 +18,18 @@ const EventControl: React.FC = () => {
     };
     updateModo();
   }, [modoAutomatico]);
+  
+  // Função para disparar eventos com debounce
+  const dispararEvento = useCallback(
+    debounce(async (evento: string) => {
+      try {
+        await api.post('/dispararEvento', { evento });
+      } catch (error) {
+        console.error('Erro ao disparar evento:', error);
+      }
+    }, 300), // Debounce de 300ms
+    []
+  );
 
   // Disparar eventos manuais com base na potência dos sensores
   useEffect(() => {
@@ -27,15 +40,7 @@ const EventControl: React.FC = () => {
         dispararEvento('Baixa luminosidade, potência alta');
       }
     }
-  }, [potenciaAgua, potenciaLuz, modoAutomatico]);
-
-  const dispararEvento = async (evento: string) => {
-    try {
-      await api.post('/dispararEvento', { evento }); // Enviar o evento ao backend
-    } catch (error) {
-      console.error('Erro ao disparar evento:', error);
-    }
-  };
+  }, [potenciaAgua, potenciaLuz, modoAutomatico, dispararEvento]);
 
   const toggleModo = () => {
     setModoAutomatico(!modoAutomatico);
