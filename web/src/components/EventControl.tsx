@@ -12,6 +12,11 @@ const EventControl: React.FC = () => {
     const updateModo = async () => {
       try {
         await api.post('/event-mode', { modoAutomatico });
+        if (modoAutomatico) {
+          // Resetar sliders ao 0% quando o modo automático estiver ativado
+          setPotenciaAgua(0);
+          setPotenciaLuz(0);
+        }
       } catch (error) {
         console.error('Erro ao atualizar o modo de eventos no backend:', error);
       }
