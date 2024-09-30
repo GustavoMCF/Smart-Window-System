@@ -4,7 +4,7 @@ import { cachearResultado } from './cache';  // Middleware de cache
 
 const router = Router();
 
-let modoAutomatico = true;
+let modoAutomatico = true;  // Modo de controle da janela
 let estadoJanela = 'Fechado';
 let eventos: string[] = [];
 
@@ -13,16 +13,25 @@ export function tratarEvento(evento: string) {
   eventos.push(evento);
   console.log(`Evento adicionado: ${evento}`);
 
-  if (evento.includes('Chuva') && estadoJanela !== 'Fechando' && estadoJanela !== 'Fechado') {
-    estadoJanela = 'Fechando';
-    setTimeout(() => {
-      estadoJanela = 'Fechado';
-    }, 3000); // Simular o tempo de fechamento da janela
-  } else if (evento.includes('Luz') && estadoJanela !== 'Abrindo' && estadoJanela !== 'Aberto') {
-    estadoJanela = 'Abrindo';
-    setTimeout(() => {
-      estadoJanela = 'Aberto';
-    }, 3000); // Simular o tempo de abertura da janela
+  // Verifica se o modo é automático antes de alterar o estado da janela
+  if (modoAutomatico) {
+    if (evento.includes('Chuva') && estadoJanela !== 'Fechando' && estadoJanela !== 'Fechado') {
+      console.log('Modo automático: fechando a janela devido ao evento de chuva.');
+      estadoJanela = 'Fechando';
+      setTimeout(() => {
+        estadoJanela = 'Fechado';
+        console.log('Janela fechada.');
+      }, 3000); // Simular o tempo de fechamento da janela
+    } else if (evento.includes('Luz') && estadoJanela !== 'Abrindo' && estadoJanela !== 'Aberto') {
+      console.log('Modo automático: abrindo a janela devido ao evento de luz.');
+      estadoJanela = 'Abrindo';
+      setTimeout(() => {
+        estadoJanela = 'Aberto';
+        console.log('Janela aberta.');
+      }, 3000); // Simular o tempo de abertura da janela
+    }
+  } else {
+    console.log('Modo manual ativo: evento ignorado.');
   }
 
   // Remover o evento automaticamente após 10 segundos
@@ -35,15 +44,18 @@ export function tratarEvento(evento: string) {
 // Rota para alternar o modo de controle da janela (manual/automático)
 router.get('/toggleModo', (req, res) => {
   modoAutomatico = !modoAutomatico;
+  console.log(`Modo de controle de janela alterado para: ${modoAutomatico ? 'Automático' : 'Manual'}`);
   res.send(`automatico=${modoAutomatico ? '1' : '0'}`);
 });
 
 // Rota para abrir a janela
 router.get('/abrir', (req, res) => {
   if (!modoAutomatico && estadoJanela !== 'Aberto') {
+    console.log('Abrindo janela manualmente.');
     estadoJanela = 'Abrindo';
     setTimeout(() => {
       estadoJanela = 'Aberto';
+      console.log('Janela aberta.');
     }, 3000); // Transição de "Abrindo" para "Aberto" em 3 segundos
     res.send({ success: true, message: 'Janela abrindo' });
   } else if (estadoJanela === 'Aberto') {
@@ -56,9 +68,11 @@ router.get('/abrir', (req, res) => {
 // Rota para fechar a janela
 router.get('/fechar', (req, res) => {
   if (!modoAutomatico && estadoJanela !== 'Fechado') {
+    console.log('Fechando janela manualmente.');
     estadoJanela = 'Fechando';
     setTimeout(() => {
       estadoJanela = 'Fechado';
+      console.log('Janela fechada.');
     }, 3000); // Transição de "Fechando" para "Fechado" em 3 segundos
     res.send({ success: true, message: 'Janela fechando' });
   } else if (estadoJanela === 'Fechado') {
