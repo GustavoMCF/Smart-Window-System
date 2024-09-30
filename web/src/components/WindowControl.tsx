@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import api from '../services/api';
 
 const WindowControl: React.FC = () => {
@@ -14,25 +14,25 @@ const WindowControl: React.FC = () => {
     }
   };
 
-  // Função para abrir a janela
-  const handleAbrir = async () => {
-    try {
-      const response = await api.get('/abrir');
-      console.log(response.data.message);
-    } catch (error) {
-      console.error('Erro ao abrir:', error);
-    }
-  };
+// Função para abrir a janela (somente se não estiver aberta)
+const handleAbrir = async () => {
+  try {
+    const response = await api.get('/abrir');
+    console.log(response.data.message);
+  } catch (error) {
+    console.error('Erro ao abrir a janela:', error);
+  }
+};
 
-  // Função para fechar a janela
-  const handleFechar = async () => {
-    try {
-      const response = await api.get('/fechar');
-      console.log(response.data.message);
-    } catch (error) {
-      console.error('Erro ao fechar:', error);
-    }
-  };
+// Função para fechar a janela (somente se não estiver fechada)
+const handleFechar = async () => {
+  try {
+    const response = await api.get('/fechar');
+    console.log(response.data.message);
+  } catch (error) {
+    console.error('Erro ao fechar a janela:', error);
+  }
+};
 
   return (
     <div className="window-control">

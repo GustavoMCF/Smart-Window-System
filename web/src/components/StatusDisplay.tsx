@@ -4,10 +4,14 @@ import api from '../services/api';
 const StatusDisplay: React.FC = () => {
   const [estado, setEstado] = useState<string>('Fechado'); // Estado inicial da janela
 
+  // Função para buscar o estado da janela no backend
   const fetchEstado = async () => {
     try {
       const response = await api.get('/estado'); // Certifique-se de que a rota é correta
-      setEstado(response.data.split('=')[1]);
+      const novoEstado = response.data.split('=')[1];
+      if (estado !== novoEstado) {
+        setEstado(novoEstado); // Apenas atualiza o estado se for diferente
+      }
     } catch (error) {
       console.error('Erro ao obter o estado:', error);
     }
@@ -18,10 +22,8 @@ const StatusDisplay: React.FC = () => {
       fetchEstado();
     }, 3000);
 
-    fetchEstado(); // Busca inicial
-
     return () => clearInterval(interval);
-  }, []);
+  }, [estado]);
 
   return (
     <div className="status-display">

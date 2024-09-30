@@ -8,15 +8,21 @@ let modoAutomatico = true;
 let estadoJanela = 'Fechado';
 let eventos: string[] = [];
 
-// Função para tratar eventos
+// Função para tratar eventos de fechamento automático
 export function tratarEvento(evento: string) {
   eventos.push(evento);
   console.log(`Evento adicionado: ${evento}`);
 
-  if (evento.includes('Chuva')) {
+  if (evento.includes('Chuva') && estadoJanela !== 'Fechando' && estadoJanela !== 'Fechado') {
     estadoJanela = 'Fechando';
-  } else if (evento.includes('Luz')) {
+    setTimeout(() => {
+      estadoJanela = 'Fechado';
+    }, 3000); // Simular o tempo de fechamento da janela
+  } else if (evento.includes('Luz') && estadoJanela !== 'Abrindo' && estadoJanela !== 'Aberto') {
     estadoJanela = 'Abrindo';
+    setTimeout(() => {
+      estadoJanela = 'Aberto';
+    }, 3000); // Simular o tempo de abertura da janela
   }
 
   // Remover o evento automaticamente após 10 segundos
@@ -34,12 +40,14 @@ router.get('/toggleModo', (req, res) => {
 
 // Rota para abrir a janela
 router.get('/abrir', (req, res) => {
-  if (!modoAutomatico) {
+  if (!modoAutomatico && estadoJanela !== 'Aberto') {
     estadoJanela = 'Abrindo';
     setTimeout(() => {
       estadoJanela = 'Aberto';
-    }, 3000);
+    }, 3000); // Transição de "Abrindo" para "Aberto" em 3 segundos
     res.send({ success: true, message: 'Janela abrindo' });
+  } else if (estadoJanela === 'Aberto') {
+    res.status(400).send({ success: false, message: 'Janela já está aberta.' });
   } else {
     res.status(400).send({ success: false, message: 'Modo automático ativado.' });
   }
@@ -47,19 +55,21 @@ router.get('/abrir', (req, res) => {
 
 // Rota para fechar a janela
 router.get('/fechar', (req, res) => {
-  if (!modoAutomatico) {
+  if (!modoAutomatico && estadoJanela !== 'Fechado') {
     estadoJanela = 'Fechando';
     setTimeout(() => {
       estadoJanela = 'Fechado';
-    }, 3000);
+    }, 3000); // Transição de "Fechando" para "Fechado" em 3 segundos
     res.send({ success: true, message: 'Janela fechando' });
+  } else if (estadoJanela === 'Fechado') {
+    res.status(400).send({ success: false, message: 'Janela já está fechada.' });
   } else {
     res.status(400).send({ success: false, message: 'Modo automático ativado.' });
   }
 });
 
 // Rota para obter o estado da janela com cache
-router.get('/estado', cachearResultado(3000), (req, res) => {
+router.get('/estado', cachearResultado(1000), (req, res) => {
   res.send(`estado=${estadoJanela}`);
 });
 
